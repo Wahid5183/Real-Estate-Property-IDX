@@ -126,6 +126,18 @@ function mpf_fetch_mls_properties() {
             if ( isset( $property['ListPrice'] ) ) {
                 update_post_meta( $post_id, 'property_price', $property['ListPrice'] );
             }
+            if ( isset( $property['ClosePrice'] ) ) {
+                update_post_meta( $post_id, 'property_close_price', $property['ClosePrice'] );
+            }
+            if ( isset( $property['DaysOnMarket'] ) ) {
+                update_post_meta( $post_id, 'property_daysonmarket', $property['DaysOnMarket'] );
+            }
+            if ( isset( $property['TaxAnnualAmount'] ) ) {
+                update_post_meta( $post_id, 'property_taxannualamount', $property['TaxAnnualAmount'] );
+            }
+            if ( isset( $property['TaxAssessedValue'] ) ) {
+                update_post_meta( $post_id, 'property_taxassessedvalue', $property['TaxAssessedValue'] );
+            }
             if ( isset( $property['MlsStatus'] ) ) {
                 update_post_meta( $post_id, 'property_status', $property['MlsStatus'] );
             }
@@ -137,6 +149,12 @@ function mpf_fetch_mls_properties() {
             }
             if ( isset( $property['PropertyType'] ) ) {
                 update_post_meta( $post_id, 'property_type', $property['PropertyType'] );
+            }
+            if ( isset( $property['PropertySubType'] ) ) {
+                update_post_meta( $post_id, 'property_subtype', $property['PropertySubType'] );
+            }
+            if ( isset( $property['StoriesTotal'] ) ) {
+                update_post_meta( $post_id, 'property_storiestotal', $property['StoriesTotal'] );
             }
             if ( isset( $property['BedroomsTotal'] ) ) {
                 update_post_meta( $post_id, 'property_beds', $property['BedroomsTotal'] );
