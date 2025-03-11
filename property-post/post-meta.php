@@ -88,37 +88,7 @@ function amenities_features_metabox_html($post) {
     <?php
 }
 
-function save_custom_fields($post_id) {
-    if (!isset($_POST['custom_fields_nonce']) || !wp_verify_nonce($_POST['custom_fields_nonce'], basename(__FILE__))) {
-        return;
-    }
 
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-
-    if (!current_user_can('edit_post', $post_id)) {
-        return;
-    }
-
-    $custom_fields = [];
-    if (isset($_POST['custom_field_name']) && isset($_POST['custom_field_value'])) {
-        $names = $_POST['custom_field_name'];
-        $values = $_POST['custom_field_value'];
-
-        for ($i = 0; $i < count($names); $i++) {
-            if (!empty($names[$i]) && !empty($values[$i])) {
-                $custom_fields[] = [
-                    'name' => sanitize_text_field($names[$i]),
-                    'value' => sanitize_text_field($values[$i])
-                ];
-            }
-        }
-    }
-
-    update_post_meta($post_id, 'custom_fields', $custom_fields);
-}
-add_action('save_post', 'save_custom_fields');
 
 
 function pcmp_property_basic_meta_box_html( $post ) {
@@ -233,137 +203,69 @@ function pcmp_property_Financial_Status_box_html( $post ) {
 }
 
 function pcmp_save_property_meta( $post_id ) {
+
+
     //Handle Property Basics Details
-    if ( array_key_exists( 'pcmp_property_description', $_POST ) ) {
+    $meta_data = [
+        'pcmp_property_description' => 'property_description',
+        'pcmp_property_location' => 'property_address',
+        'pcmp_property_year_built' => 'property_year_built',
+        'pcmp_property_Status' => 'property_Status',
+        'pcmp_property_lot_area' => 'property_lot_area',
+        'pcmp_property_type' => 'property_type',
+        'pcmp_property_subtype' => 'property_subtype',
+        'pcmp_property_storiestotal' => 'property_storiestotal',
+        'pcmp_property_home_area' => 'property_home_area',
+        'pcmp_property_rooms' => 'property_rooms',
+        'pcmp_property_baths' => 'property_baths',
+        'pcmp_property_beds' => 'property_beds',
+        'pcmp_property_garages' => 'property_garages',
+        'pcmp_property_price' => 'property_price',
+        'pcmp_property_close_price' => 'property_close_price',
+        'pcmp_property_daysonmarket' => 'property_daysonmarket',
+        'pcmp_property_taxannualamount' => 'property_taxannualamount',
+        'pcmp_property_taxassessedvalue' => 'property_taxassessedvalue',
+
+    ];
+    foreach($meta_data as $meta_key => $meta_value){
+        if ( array_key_exists($meta_key, $_POST ) ) {
         update_post_meta(
             $post_id,
-            'property_description',
-            sanitize_textarea_field( $_POST['pcmp_property_description'] )
+            $meta_value,
+            sanitize_text_field( $_POST[$meta_key] )
         );
     }
-    if ( array_key_exists( 'pcmp_property_location', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_address',
-            sanitize_text_field( $_POST['pcmp_property_location'] )
-        );
-    }
-    
-    if ( array_key_exists( 'pcmp_property_year_built', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_year_built',
-            sanitize_text_field( $_POST['pcmp_property_year_built'] )
-        );
-    }
-    if ( array_key_exists( 'pcmp_property_Status', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_Status',
-            sanitize_text_field( $_POST['pcmp_property_Status'] )
-        );
-    }
-    if ( array_key_exists( 'pcmp_property_lot_area', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_lot_area',
-            sanitize_text_field( $_POST['pcmp_property_lot_area'] )
-        );
-    }
-    if ( array_key_exists( 'pcmp_property_type', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_type',
-            sanitize_text_field( $_POST['pcmp_property_type'] )
-        );
-    }
-    if ( array_key_exists( 'pcmp_property_subtype', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_storiestotal',
-            sanitize_text_field( $_POST['pcmp_property_subtype'] )
-        );
-    }
-    if ( array_key_exists( 'pcmp_property_storiestotal', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_subtype',
-            sanitize_text_field( $_POST['pcmp_property_storiestotal'] )
-        );
     }
 
-    //handle Property Housing Destails
-    if ( array_key_exists( 'pcmp_property_home_area', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_home_area',
-            sanitize_textarea_field( $_POST['pcmp_property_home_area'] )
-        );
+    if (!isset($_POST['custom_fields_nonce']) || !wp_verify_nonce($_POST['custom_fields_nonce'], basename(__FILE__))) {
+        return;
     }
-    if ( array_key_exists( 'pcmp_property_rooms', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_rooms',
-            sanitize_textarea_field( $_POST['pcmp_property_rooms'] )
-        );
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
     }
-    if ( array_key_exists( 'pcmp_property_baths', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_baths',
-            sanitize_textarea_field( $_POST['pcmp_property_baths'] )
-        );
+
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
     }
-    if ( array_key_exists( 'pcmp_property_beds', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_beds',
-            sanitize_textarea_field( $_POST['pcmp_property_beds'] )
-        );
+
+    $custom_fields = [];
+    if (isset($_POST['custom_field_name']) && isset($_POST['custom_field_value'])) {
+        $names = $_POST['custom_field_name'];
+        $values = $_POST['custom_field_value'];
+
+        for ($i = 0; $i < count($names); $i++) {
+            if (!empty($names[$i]) && !empty($values[$i])) {
+                $custom_fields[] = [
+                    'name' => sanitize_text_field($names[$i]),
+                    'value' => sanitize_text_field($values[$i])
+                ];
+            }
+        }
     }
-    if ( array_key_exists( 'pcmp_property_garages', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_garages',
-            sanitize_textarea_field( $_POST['pcmp_property_garages'] )
-        );
-    }
-    //save Financial data
-    if ( array_key_exists( 'pcmp_property_price', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_price',
-            sanitize_text_field( $_POST['pcmp_property_price'] )
-        );
-    }
-    if ( array_key_exists( 'pcmp_property_close_price', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_close_price',
-            sanitize_text_field( $_POST['pcmp_property_close_price'] )
-        );
-    }
-    if ( array_key_exists( 'pcmp_property_daysonmarket', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_daysonmarket',
-            sanitize_text_field( $_POST['pcmp_property_daysonmarket'] )
-        );
-    }
-    if ( array_key_exists( 'pcmp_property_taxannualamount', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_taxannualamount',
-            sanitize_text_field( $_POST['pcmp_property_taxannualamount'] )
-        );
-    }
-    if ( array_key_exists( 'pcmp_property_taxassessedvalue', $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            'property_taxassessedvalue',
-            sanitize_text_field( $_POST['pcmp_property_taxassessedvalue'] )
-        );
-    }
+
+    update_post_meta($post_id, 'custom_fields', $custom_fields);
+    
     // Save additional fields similarly...
 }
 add_action( 'save_post', 'pcmp_save_property_meta' );
@@ -391,3 +293,138 @@ function psp_template_include( $template ) {
     return $template;
 }
 add_filter( 'template_include', 'psp_template_include' );
+
+
+function my_admin_enqueue_scripts() {
+    wp_enqueue_media();
+}
+add_action('admin_enqueue_scripts', 'my_admin_enqueue_scripts');
+// Register the metabox for multiple property images.
+function my_property_meta_box() {
+    add_meta_box(
+        'property_images_meta_box',                   // Unique ID
+        __('Property Images', 'textdomain'),          // Title
+        'property_images_meta_box_callback',          // Callback function
+        'property',                                   // Post type slug (adjust if needed)
+        'normal',                                     // Context
+        'high'                                        // Priority
+    );
+}
+add_action('add_meta_boxes', 'my_property_meta_box');
+
+// Display callback for the metabox.
+function property_images_meta_box_callback($post) {
+    // Security nonce
+    wp_nonce_field('save_property_images', 'property_images_nonce');
+
+    // Retrieve existing image URLs (stored as a comma-separated string)
+    $image_srcs = get_post_meta($post->ID, '_property_image_src', true);
+    $image_srcs = !empty($image_srcs) ? explode(',', $image_srcs) : [];
+    ?>
+    <div id="property-images-container">
+        <?php 
+        if (!empty($image_srcs)) {
+            foreach ($image_srcs as $image_src) {
+                if (!empty($image_src)) {
+                    echo '<div class="property-image" data-image_src="' . esc_url($image_src) . '">';
+                    echo '<img src="' . esc_url($image_src) . '" style="max-width:100px; height:auto;"/>';
+                    echo '<button type="button" class="remove-image button">X</button>';
+                    echo '</div>';
+                }
+            }
+        }
+        ?>
+    </div>
+    <!-- Hidden field to store comma-separated image srcs -->
+    <input type="hidden" name="property_image_src" id="property_image_src" value="<?php echo esc_attr(implode(',', $image_srcs)); ?>" />
+    <button type="button" class="button" id="upload-property-images"><?php _e('Add Photos', 'textdomain'); ?></button>
+    
+    <script>
+        jQuery(document).ready(function($){
+            var mediaUploader;
+            $('#upload-property-images').click(function(e){
+                e.preventDefault();
+                // Create a new media uploader instance with multiple selection enabled.
+                mediaUploader = wp.media({
+                    title: '<?php _e("Choose Property Images", "textdomain"); ?>',
+                    button: { text: '<?php _e("Add Images", "textdomain"); ?>' },
+                    multiple: true
+                });
+                mediaUploader.on('select', function(){
+                    var selection = mediaUploader.state().get('selection');
+                    // Get existing srcs from the hidden field
+                    var srcs = $('#property_image_src').val() ? $('#property_image_src').val().split(',') : [];
+                    
+                    selection.each(function(attachment){
+                        attachment = attachment.toJSON();
+                        var imageUrl = attachment.sizes.full ? attachment.sizes.full.url : attachment.url;
+                        if (!srcs.includes(imageUrl)) {
+                            srcs.push(imageUrl);
+                            $('#property-images-container').append(
+                                '<div class="property-image" data-image_src="'+ imageUrl +'">'+
+                                '<img src="'+ imageUrl +'" style="min-width:200px; height:auto;"/>'+
+                                '<button type="button" class="remove-image button">Remove</button>'+
+                                '</div>'
+                            );
+                        }
+                    });
+                    // Update the hidden field with the new comma-separated URLs
+                    $('#property_image_src').val(srcs.join(','));
+                });
+                mediaUploader.open();
+            });
+            
+            // Remove an image
+            $('#property-images-container').on('click', '.remove-image', function(){
+                var parentDiv = $(this).closest('.property-image');
+                var image_src = parentDiv.data('image_src').toString();
+                parentDiv.remove();
+                var srcs = $('#property_image_src').val().split(',');
+                // Filter out the removed image src
+                srcs = srcs.filter(function(src) {
+                    return src !== image_src;
+                });
+                $('#property_image_src').val(srcs.join(','));
+            });
+        });
+    </script>
+
+    <style>
+        #property-images-container .property-image {
+            display: inline-block;
+            margin-right: 10px;
+            position: relative;
+        }
+        #property-images-container .property-image .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 3px 6px;
+            cursor: pointer;
+        }
+    </style>
+    <?php
+}
+
+// Save the metabox data.
+function save_property_images_meta($post_id) {
+    // Verify nonce.
+    if (!isset($_POST['property_images_nonce']) || !wp_verify_nonce($_POST['property_images_nonce'], 'save_property_images')) {
+        return;
+    }
+    // Prevent auto-save interference.
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (isset($_POST['property_image_src'])) {
+        // Sanitize and save the comma-separated list of image URLs.
+        $srcs = sanitize_text_field($_POST['property_image_src']);
+        update_post_meta($post_id, '_property_image_src', $srcs);
+    }
+}
+add_action('save_post', 'save_property_images_meta');
+
+

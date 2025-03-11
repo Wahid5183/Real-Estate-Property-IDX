@@ -1,0 +1,33 @@
+.property-search-box .form-group {
+  transition: background-color 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.property-search-box .form-group:hover {
+  background-color: #f8f9fa;
+}
+
+.icon-left {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  z-index: 2;
+}
+
+.form-control,
+.form-select {
+  padding-left: 2.5rem !important;
+  background-color: transparent !important;
+}
+
+.card {
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}

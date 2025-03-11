@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -120,76 +121,101 @@ function mpf_fetch_mls_properties() {
 
         
         
-        if ( ! is_wp_error( $post_id ) ) {
-            update_post_meta( $post_id, 'property_description', $content );
-            update_post_meta( $post_id, 'mls_listing_id', $listing_id );
-            if ( isset( $property['ListPrice'] ) ) {
-                update_post_meta( $post_id, 'property_price', $property['ListPrice'] );
+        if (!is_wp_error($post_id)) {
+            $img_src = [];
+
+        if (!empty($property['Media']) && is_array($property['Media'])) {
+            foreach ($property['Media'] as $media) {
+                if (!empty($media['MediaURL']) && filter_var($media['MediaURL'], FILTER_VALIDATE_URL)) {
+                    $img_src[] = esc_url_raw($media['MediaURL']);
+                }
             }
-            if ( isset( $property['ClosePrice'] ) ) {
-                update_post_meta( $post_id, 'property_close_price', $property['ClosePrice'] );
+        }
+
+        // Store the image URLs as a comma-separated string in post meta
+        if (!empty($img_src)) {
+            update_post_meta($post_id, '_property_image_src', implode(',', $img_src));
+        }
+
+           
+
+            $custom_fields = [];
+            $feathure_meta_feilds = [
+                'Heating' => $property['Heating'],
+                'Cooling' => $property['Cooling'],
+                'Flooring' => $property['Flooring'],
+                'ExteriorFeatures' => $property['ExteriorFeatures'],
+                'InteriorFeatures' => $property['InteriorFeatures'],
+                'InteriorFeatures' => $property['InteriorFeatures'],
+                'SecurityFeatures' => $property['SecurityFeatures'],
+                'WaterSource' => $property['WaterSource'],
+                'Sewer' => $property['Sewer'],
+                'DoorFeatures' => $property['DoorFeatures'],
+                'Roof' => $property['Roof'],
+            ];
+
+           
+        
+            // Handle "Heating" as a custom field (if exists)
+            foreach($feathure_meta_feilds as $feilds_key => $feilds_value){
+                if(!empty($feilds_value)){
+                    $custom_fields[] = [
+                    'name' => $feilds_key,
+                    'value' => sanitize_text_field(implode(', ', $feilds_value)),
+                    'featured' => 1
+                ];
+                }
+                
             }
-            if ( isset( $property['DaysOnMarket'] ) ) {
-                update_post_meta( $post_id, 'property_daysonmarket', $property['DaysOnMarket'] );
-            }
-            if ( isset( $property['TaxAnnualAmount'] ) ) {
-                update_post_meta( $post_id, 'property_taxannualamount', $property['TaxAnnualAmount'] );
-            }
-            if ( isset( $property['TaxAssessedValue'] ) ) {
-                update_post_meta( $post_id, 'property_taxassessedvalue', $property['TaxAssessedValue'] );
-            }
-            if ( isset( $property['MlsStatus'] ) ) {
-                update_post_meta( $post_id, 'property_status', $property['MlsStatus'] );
-            }
-            if ( isset( $property['LivingArea'] ) ) {
-                update_post_meta( $post_id, 'property_home_area', $property['LivingArea'] );
-            }
-            if ( isset( $property['LotSizeSquareFeet'] ) ) {
-                update_post_meta( $post_id, 'property_lot_area', $property['LotSizeSquareFeet'] );
-            }
-            if ( isset( $property['PropertyType'] ) ) {
-                update_post_meta( $post_id, 'property_type', $property['PropertyType'] );
-            }
-            if ( isset( $property['PropertySubType'] ) ) {
-                update_post_meta( $post_id, 'property_subtype', $property['PropertySubType'] );
-            }
-            if ( isset( $property['StoriesTotal'] ) ) {
-                update_post_meta( $post_id, 'property_storiestotal', $property['StoriesTotal'] );
-            }
-            if ( isset( $property['BedroomsTotal'] ) ) {
-                update_post_meta( $post_id, 'property_beds', $property['BedroomsTotal'] );
-            }
-            if ( isset( $property['BathroomsTotalDecimal'] ) ) {
-                update_post_meta( $post_id, 'property_baths', $property['BathroomsTotalDecimal'] );
-            }
-            if ( isset( $property['YearBuilt'] ) ) {
-                update_post_meta( $post_id, 'property_year_built', $property['YearBuilt'] );
-            }
-            if ( isset( $property['GarageSpaces'] ) ) {
-                update_post_meta( $post_id, 'property_garages', $property['GarageSpaces'] );
-            }
-            // Construct an address from available fields.
-            $address_parts = array();
-            if ( isset( $property['StreetNumber'] ) ) {
-                $address_parts[] = $property['StreetNumber'];
-            }
-            if ( isset( $property['StreetName'] ) ) {
-                $address_parts[] = $property['StreetName'];
-            }
-            if ( isset( $property['City'] ) ) {
-                $address_parts[] = $property['City'];
-            }
-            if ( isset( $property['StateOrProvince'] ) ) {
-                $address_parts[] = $property['StateOrProvince'];
-            }
-            if ( isset( $property['PostalCode'] ) ) {
-                $address_parts[] = $property['PostalCode'];
-            }
-            $address = implode(', ', $address_parts);
-            update_post_meta( $post_id, 'property_address', $address );
             
+        
+            // Update custom fields meta
+            update_post_meta($post_id, 'custom_fields', $custom_fields);
+        
+            // Meta fields mapping
+            $meta_fields = [
+                'property_description'    => $content,
+                'mls_listing_id'          => $listing_id,
+                'property_price'          => $property['ListPrice'] ?? null,
+                'property_close_price'    => $property['ClosePrice'] ?? null,
+                'property_daysonmarket'   => $property['DaysOnMarket'] ?? null,
+                'property_taxannualamount'=> $property['TaxAnnualAmount'] ?? null,
+                'property_taxassessedvalue'=> $property['TaxAssessedValue'] ?? null,
+                'property_status'         => $property['MlsStatus'] ?? null,
+                'property_home_area'      => $property['LivingArea'] ?? null,
+                'property_lot_area'       => $property['LotSizeSquareFeet'] ?? null,
+                'property_type'           => $property['PropertyType'] ?? null,
+                'property_subtype'        => $property['PropertySubType'] ?? null,
+                'property_storiestotal'   => $property['StoriesTotal'] ?? null,
+                'property_beds'           => $property['BedroomsTotal'] ?? null,
+                'property_baths'          => $property['BathroomsTotalDecimal'] ?? null,
+                'property_year_built'     => $property['YearBuilt'] ?? null,
+                'property_garages'        => $property['GarageSpaces'] ?? null
+            ];
+        
+            // Bulk update all meta fields
+            foreach ($meta_fields as $meta_key => $value) {
+                if ($value !== null) {
+                    update_post_meta($post_id, $meta_key, $value);
+                }
+            }
+        
+            // Construct and update property address
+            $address_parts = array_filter([
+                $property['StreetNumber'] ?? null,
+                $property['StreetName'] ?? null,
+                $property['City'] ?? null,
+                $property['StateOrProvince'] ?? null,
+                $property['PostalCode'] ?? null
+            ]);
+        
+            if (!empty($address_parts)) {
+                update_post_meta($post_id, 'property_address', implode(', ', $address_parts));
+            }
+        
             $count++;
         }
+        
     }
     
     wp_redirect( admin_url( 'admin.php?page=mpf-fetcher&mpf_message=' . urlencode( "Successfully fetched $count properties." ) ) );
