@@ -122,7 +122,7 @@ function pcmp_property_housing_meta_box_html( $post ) {
     $beds = get_post_meta( $post->ID, 'property_beds', true );
     $garages = get_post_meta( $post->ID, 'property_garages', true );
     $year_built    = get_post_meta( $post->ID, 'property_year_built', true );
-    $Status    = get_post_meta( $post->ID, 'property_Status', true );
+    $Status    = get_post_meta( $post->ID, 'property_status', true );
     $lot_area    = get_post_meta( $post->ID, 'property_lot_area', true );
     $lot_dimensions    = get_post_meta( $post->ID, 'property_lot_dimensions', true );
     $property_type    = get_post_meta( $post->ID, 'property_type', true );
@@ -146,10 +146,10 @@ function pcmp_property_housing_meta_box_html( $post ) {
     </p>
         <label for="pcmp_property_year_built">Year Built:</label>
         <input type="number" min=1900 id="pcmp_property_year_built" name="pcmp_property_year_built" value="<?php echo esc_attr($year_built) ; ?>" style="width:30%;" />
-        <label for="pcmp_property_Status">Status:</label>
-        <select name="pcmp_property_Status" id="pcmp_property_Status">
-            <option value="For_Rent" <?php $Status = "Rent" ? 'selected' : "" ;  ?> >For Rent</option>
-            <option value="For_Sale"  <?php $Status = "Sold" ? 'selected' : "" ;  ?> >For Sale</option>
+        <label for="pcmp_property_status">Status:</label>
+        <select name="pcmp_property_status" id="pcmp_property_status">
+            <option value="Rented/Leased" <?php $Status = "Rent" ? 'selected' : "" ;  ?> >For Rent</option>
+            <option value="Sold"  <?php $Status = "Sold" ? 'selected' : "" ;  ?> >For Sale</option>
         </select>
         <p>
         
@@ -210,7 +210,7 @@ function pcmp_save_property_meta( $post_id ) {
         'pcmp_property_description' => 'property_description',
         'pcmp_property_location' => 'property_address',
         'pcmp_property_year_built' => 'property_year_built',
-        'pcmp_property_Status' => 'property_Status',
+        'pcmp_property_status' => 'property_status',
         'pcmp_property_lot_area' => 'property_lot_area',
         'pcmp_property_type' => 'property_type',
         'pcmp_property_subtype' => 'property_subtype',

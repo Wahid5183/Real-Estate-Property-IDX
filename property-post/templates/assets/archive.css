@@ -31,3 +31,86 @@
 .card:hover {
   transform: translateY(-5px);
 }
+
+.pagination span {
+  background: blue !important;
+  min-width: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+  border-radius: 50px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+  margin: 0 5px;
+  display: inline-block;
+  float: none;
+  color: rgb(255, 255, 255);
+  border-radius: 50% !important;
+  transition: all 0.3s ease-in-out 0s;
+  min-width: 30px;
+  line-height: 30px;
+  padding: 0 5px;
+  border: 0;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.pagination a {
+  min-width: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+  border-radius: 50px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+  margin: 0 5px;
+  display: inline-block;
+  float: none;
+  color: rgb(39, 39, 39);
+  border-radius: 50% !important;
+  transition: all 0.3s ease-in-out 0s;
+  min-width: 30px;
+  line-height: 30px;
+  padding: 0 5px;
+  border: 0;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+.reset-btn {
+  text-decoration: none;
+  color: rgb(36, 35, 35);
+}
+.property_address {
+  color: rgb(59, 59, 59);
+  font-size: 16px;
+  text-align: left;
+}
+
+.property_name {
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+}
+.property_status_tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 123, 255, 0.8); /* Semi-transparent blue */
+  color: white;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+.property-count {
+  font-size: 16px;
+  font-weight: normal;
+  margin-bottom: 0px;
+  text-align: start;
+}

@@ -6,16 +6,16 @@ Description: A custom archive page to display property posts with filter options
 get_header();
 
 // Retrieve filter parameters from the URL
-$price_min = isset($_GET['price_min']) ? floatval($_GET['price_min']) : '';
-$price_max = isset($_GET['price_max']) ? floatval($_GET['price_max']) : '';
-$status    = isset($_GET['status'])    ? sanitize_text_field($_GET['status']) : '';
+$price_min = isset($_GET['price_min']) ? floatval($_GET['price_min']) : 0;
+$price_max = isset($_GET['price_max']) ? floatval($_GET['price_max']) : 1000000;
+$status    = isset($_GET['property_Status'])    ? sanitize_text_field($_GET['property_Status']) : '';
 $bedrooms  = isset($_GET['bedrooms'])  ? intval($_GET['bedrooms']) : '';
 $bathrooms = isset($_GET['bathrooms']) ? intval($_GET['bathrooms']) : '';
 $property_type = isset($_GET['property_type']) ? sanitize_text_field($_GET['property_type']) : '';
-$sqft_min = isset($_GET['sqft_min']) ? intval($_GET['sqft_min']) : '';
-$sqft_max = isset($_GET['sqft_max']) ? intval($_GET['sqft_max']) : '';
+$sqft_min = isset($_GET['sqft_min']) ? intval($_GET['sqft_min']) : 0;
+$sqft_max = isset($_GET['sqft_max']) ? intval($_GET['sqft_max']) : 2500;
 
-$meta_query = array('relation' => 'AND'); // Ensure queries are combined properly
+$meta_query = array('relation' => 'AND');
 
 if (!empty($price_min) && $price_min > 0) {
     $meta_query[] = array(
@@ -45,7 +45,7 @@ if (!empty($bedrooms) && $bedrooms > 0) {
         'key'     => 'property_beds',
         'value'   => $bedrooms,
         'type'    => 'NUMERIC',
-        'compare' => '>=' // Adjust as needed
+        'compare' => '>='
     );
 }
 if (!empty($bathrooms) && $bathrooms > 0) {
@@ -53,7 +53,7 @@ if (!empty($bathrooms) && $bathrooms > 0) {
         'key'     => 'property_baths',
         'value'   => $bathrooms,
         'type'    => 'NUMERIC',
-        'compare' => '>=' // Adjust as needed
+        'compare' => '>='
     );
 }
 if (!empty($property_type)) {
@@ -80,14 +80,14 @@ if (!empty($sqft_max) && $sqft_max > 0) {
     );
 }
 
-
 // Set up pagination.
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
+print_r($meta_query);
 // Query the 'property' posts with the meta query.
 $args = array(
     'post_type'      => 'property',
-    'posts_per_page' => 10,
+    'posts_per_page' => 12,
     'paged'          => $paged,
     'meta_query'     => $meta_query,
 );
@@ -97,6 +97,8 @@ $query = new WP_Query($args);
     <div class="container py-4">
         <div class="heading text-center">
             <h2 class='fs-5 mb-3'>Properties</h2>
+            <?php custom_breadcrumb(); ?>
+
             <div class="property-search-box row">
                 <!-- Search Filters Column -->
                      <div class="col-lg-4 mb-4">
@@ -105,11 +107,11 @@ $query = new WP_Query($args);
                                 <!-- Price Range -->
                                 <div class="form-group position-relative mb-4">
                                     <label>Min Price: <span id="price_min_value"><?php echo esc_attr($price_min); ?></span></label>
-                                    <input type="range" name="price_min" class="form-control border-0 py-3 px-4" min="0" max="1000000" step="1000" value="<?php echo esc_attr($price_min); ?>" oninput="document.getElementById('price_min_value').innerText = this.value">
+                                    <input type="range" name="price_min" class="form-control border-0 py-3 px-4" min="0" max="1000000" step="1" value="<?php echo esc_attr($price_min); ?>" oninput="document.getElementById('price_min_value').innerText = this.value">
                                 </div>
                                 <div class="form-group position-relative mb-4">
                                     <label>Max Price: <span id="price_max_value"><?php echo esc_attr($price_max); ?></span></label>
-                                    <input type="range" name="price_max" class="form-control border-0 py-3 px-4" min="0" max="1000000" step="1000" value="<?php echo esc_attr($price_max); ?>" oninput="document.getElementById('price_max_value').innerText = this.value">
+                                    <input type="range" name="price_max" class="form-control border-0 py-3 px-4" min="0" max="1000000" step="1" value="<?php echo esc_attr($price_max); ?>" oninput="document.getElementById('price_max_value').innerText = this.value">
                                 </div>
                                 
                                 <!-- Status Select -->
@@ -157,11 +159,11 @@ $query = new WP_Query($args);
                                 <!-- Home Area Range -->
                                 <div class="form-group position-relative mb-4">
                                     <label>Min Home Area (Sqft): <span id="sqft_min_value"><?php echo esc_attr($sqft_min); ?></span></label>
-                                    <input type="range" name="sqft_min" class="form-control border-0 py-3 px-4" min="0" max="10000" step="50" value="<?php echo esc_attr($sqft_min); ?>" oninput="document.getElementById('sqft_min_value').innerText = this.value">
+                                    <input type="range" name="sqft_min" class="form-control border-0 py-3 px-4" min="0" max="2500" step="50" value="<?php echo esc_attr($sqft_min); ?>" oninput="document.getElementById('sqft_min_value').innerText = this.value">
                                 </div>
                                 <div class="form-group position-relative mb-4">
                                     <label>Max Home Area (Sqft): <span id="sqft_max_value"><?php echo esc_attr($sqft_max); ?></span></label>
-                                    <input type="range" name="sqft_max" class="form-control border-0 py-3 px-4" min="0" max="10000" step="50" value="<?php echo esc_attr($sqft_max); ?>" oninput="document.getElementById('sqft_max_value').innerText = this.value">
+                                    <input type="range" name="sqft_max" class="form-control border-0 py-3 px-4" min="0" max="2500" step="50" value="<?php echo esc_attr($sqft_max); ?>" oninput="document.getElementById('sqft_max_value').innerText = this.value">
                                 </div>
                                 
                                 <!-- Search Button -->
@@ -169,6 +171,13 @@ $query = new WP_Query($args);
                                     <i class="fa-solid fa-magnifying-glass me-2"></i> Search Properties
                                 </button>
                             </form>
+                            <div class=" text-start">
+                                <a  class="reset-btn py-3 mt-2 " onclick="window.location.href=window.location.pathname">
+                                     Reset Search
+                            </a>
+
+                            </div>
+                            
                         </div>
                     </div>
 
@@ -177,6 +186,20 @@ $query = new WP_Query($args);
                 <div class="col-lg-8">
                     <div class="row g-4">
                                             <?php if ($query->have_posts()) : ?>
+                                                <?php
+                                    global $wp_query;
+                                    $paged = max(1, get_query_var('paged'));
+                                    $per_page = get_query_var('posts_per_page', 9); // Adjust this based on your query
+                                    $total_posts = $wp_query->found_posts;
+
+                                    $start = ($paged - 1) * $per_page + 1;
+                                    $end = min($start + $per_page - 1, $total_posts);
+
+                                    if ($total_posts > 0) {
+                                        echo "<p class='property-count'>Showing {$start} – {$end} of {$total_posts} results</p>";
+                                    }
+                                    ?>
+
                             <?php while ($query->have_posts()) : $query->the_post(); ?>
                                 <div class="col-md-6 col-xl-4">
                                     <div class="card shadow-sm h-100">
@@ -185,11 +208,14 @@ $query = new WP_Query($args);
                                                 <?php  
                                                     $image_srcs = get_post_meta($post->ID, '_property_image_src', true);
                                                     $image_srcs = !empty($image_srcs) ? explode(',', $image_srcs) : []; 
+                                                    $property_status = get_post_meta(get_the_ID(), 'property_status', true);
+
                                                 ?>
                                                 <?php if (!empty($image_srcs)) : ?>
                                                     <?php foreach ($image_srcs as $index => $image_src): ?>
                                                         <?php if (!empty($image_src)) : ?>
-                                                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>" data-bs-interval="5000">
+                                                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>" data-bs-interval="10000000">
+                                                                <p class="property_status_tag"><?php echo $property_status; ?></p>
                                                                 <img src="<?php echo esc_url($image_src); ?>" class="d-block w-100" alt="Property Image" height='200px'>
                                                             </div>
                                                         <?php endif; ?>
@@ -211,8 +237,12 @@ $query = new WP_Query($args);
                                         </div>
 
                                         <div class="card-body">
-                                            <h5 class="card-title"><?php the_title(); ?></h5>
-                                            <p><?php echo get_post_meta(get_the_ID(), '_property_address', true); ?></p>
+                                            <h5 class="card-title text-start">
+                                            <a class="property_name"href="<?php echo the_permalink(); ?>">    
+                                            <?php the_title(); ?>
+                                            </a>
+                                            </h5>
+                                            <p class="property_address"><?php echo get_post_meta(get_the_ID(), 'property_address', true); ?></p>
 
                                             <div class="d-flex gap-4">
                                                 <div class="card-text text-muted">
@@ -234,13 +264,43 @@ $query = new WP_Query($args);
                                             </div>
 
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <span class="h5 text-primary">$<?php echo number_format(get_post_meta(get_the_ID(), '_property_price', true)); ?></span>
-                                                <a href="<?php the_permalink(); ?>" class="btn btn-sm btn-outline-primary">View Details</a>
+                                                
+                                            <span class="h5 text-primary">
+    <?php 
+        $property_price = get_post_meta(get_the_ID(), 'property_price', true);
+        $property_status = get_post_meta(get_the_ID(), 'property_status', true);
+
+        // Display price if it's numeric, otherwise show "N/A"
+        echo is_numeric($property_price) ? "$" . number_format($property_price) : "N/A";
+
+        // Append "/mo" if status is "Rented/Leased"
+        if ($property_status === 'Rented/Leased') {
+            echo " /mo";
+        }
+    ?>
+</span>
+
+                                                <a href="<?php the_permalink(); ?>" class=""><i class="fa fa-expand" aria-hidden="true"></i>
+
+                                            </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             <?php endwhile; ?>
+                            <div class="pagination justify-content-center gap-2">
+                            <?php
+                            echo paginate_links( array(
+                                'total'     => $query->max_num_pages,
+                                'current'   => $paged,
+                                'format'    => '?paged=%#%',
+                                'add_args'  => $_GET, // Retains existing query parameters (filters)
+                                'prev_text' => __('&laquo; Previous'),
+                                'next_text' => __('Next &raquo;'),
+                            ) );
+                            ?>
+                        </div>
+
                         <?php else : ?>
                             <p>No properties found.</p>
                         <?php endif; ?>
