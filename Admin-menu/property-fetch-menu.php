@@ -1,4 +1,3 @@
-
 <?php
 
 /**
@@ -21,6 +20,8 @@ add_action( 'admin_menu', 'mpf_admin_menu' );
  * Display the admin page with a form to set the fetch limit.
  */
 function mpf_admin_page() {
+    global $wpdb;
+
     ?>
     <div class="wrap">
         <h1>MLS Property Fetcher</h1>
@@ -44,6 +45,40 @@ function mpf_admin_page() {
             </table>
             <?php submit_button( 'Fetch Data' ); ?>
         </form>
+
+        <div class="copy-container">
+    <div class="copy-item">
+        <label for="input1">Sold Property Shortcode</label>
+        <input type="text" id="input1" value='[property_horizontal posts_per_page="12" status="sold"]' readonly>
+        <button onclick="copyToClipboard('input1')">Copy</button>
+    </div>
+    <div class="copy-item">
+        <label for="input2">Rent Property Shortcode</label>
+        <input type="text" id="input2" value='[property_horizontal posts_per_page="12" status="rent"]' readonly>
+        <button onclick="copyToClipboard('input2')">Copy</button>
+    </div>
+    <div class="copy-item">
+        <label for="input3">Recent Property Shortcode</label>
+        <input type="text" id="input3" value='[property_horizontal posts_per_page="12" ]' readonly>
+        <button onclick="copyToClipboard('input3')">Copy</button>
+    </div>
+    <div class="copy-item">
+        <label for="input4">Recent Property Shortcode</label>
+        <input type="text" id="input4" value='[property_search]' readonly>
+        <button onclick="copyToClipboard('input4')">Copy</button>
+    </div>
+</div>
+
+<script>
+    function copyToClipboard(id) {
+        var copyText = document.getElementById(id);
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+        alert("Copied: " + copyText.value);
+    }
+</script>
+
     </div>
     <?php
 }
@@ -152,6 +187,9 @@ function mpf_fetch_mls_properties() {
                 'Sewer' => $property['Sewer'],
                 'DoorFeatures' => $property['DoorFeatures'],
                 'Roof' => $property['Roof'],
+                'Community Feathure' => $property['CommunityFeatures'],
+                'Parking Feathure' => $property['ParkingFeatures'],
+                'Bathroom Feathure' => $property['RoomBathroomFeatures'],
             ];
 
            
@@ -183,14 +221,14 @@ function mpf_fetch_mls_properties() {
                 'property_taxassessedvalue'=> $property['TaxAssessedValue'] ?? null,
                 'property_status'         => $property['MlsStatus'] ?? null,
                 'property_home_area'      => $property['LivingArea'] ?? null,
-                'property_lot_area'       => $property['LotSizeSquareFeet'] ?? null,
+                'lot_area'       => $property['LotSizeSquareFeet'] ?? null,
                 'property_type'           => $property['PropertyType'] ?? null,
                 'property_subtype'        => $property['PropertySubType'] ?? null,
                 'property_storiestotal'   => $property['StoriesTotal'] ?? null,
-                'property_beds'           => $property['BedroomsTotal'] ?? null,
-                'property_baths'          => $property['BathroomsTotalDecimal'] ?? null,
+                'beds'           => $property['BedroomsTotal'] ?? null,
+                'baths'          => $property['BathroomsTotalDecimal'] ?? null,
                 'property_year_built'     => $property['YearBuilt'] ?? null,
-                'property_garages'        => $property['GarageSpaces'] ?? null
+                'garages'        => $property['GarageSpaces'] ?? null
             ];
         
             // Bulk update all meta fields

@@ -1,61 +1,77 @@
-.property-images-gallery {
-  position: relative;
-}
-
-.gallery-property-main-detail {
-  position: relative;
-  overflow: hidden;
-}
-
-.gallery-property-main-detail img {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-}
-
-.property-status {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(255, 69, 0, 0.9);
-  color: white;
-  padding: 5px 10px;
+body {
+  font-family: sans-serif;
   font-size: 14px;
-  font-weight: bold;
-  border-radius: 3px;
-  text-transform: uppercase;
+  font-weight: 400;
+  line-height: 1.72;
+  color: #696969;
+  background: #fff;
+  overflow-x: hidden;
+}
+/* Custom lightbox styling */
+
+@media (min-width: 1530px) {
+  .container {
+    max-width: 1500px;
+  }
 }
 
-.row-10 {
-  display: flex;
-  gap: 10px;
+.fancybox__container {
+  --fancybox-bg: rgba(0, 0, 0, 0.9);
 }
 
-.col-sm-4 img {
-  border-radius: 5px;
-  transition: transform 0.3s ease-in-out;
+.fancybox__toolbar {
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
 }
 
-.col-sm-4 img:hover {
-  transform: scale(1.05);
+.fancybox__nav {
+  --f-button-width: 40px;
+  --f-button-height: 40px;
 }
-.description-inner-wrapper {
-  max-height: 100px; /* Limit the height initially */
-  overflow: hidden;
-  transition: max-height 0.5s ease-in-out;
-}
-
-.description-inner.expanded .description-inner-wrapper {
-  max-height: 1000px; /* Adjust as needed */
+.main_img {
+  width: 100%;
+  min-width: 100%;
 }
 
-.show-more-less-wrapper {
-  margin-top: 10px;
+.fancybox__thumbs .carousel__slide {
+  padding: 8px;
+}
+@media (min-width: 1200px) {
+  .feathure {
+    margin-right: 30px;
+  }
 }
 
-.show-more,
-.show-less {
-  color: blue;
-  cursor: pointer;
-  font-weight: bold;
+.pricing {
+  font-size: 24px;
+  color: #0d263b;
+  font-family: sans-serif;
+  font-weight: 600;
+}
+.badge {
+  background-color: gray;
+}
+.breadcrumb > .active {
+  color: #0d263b;
+}
+
+.breadcrumb-item a {
+  text-decoration: none;
+  color: #696969;
+}
+.property-title {
+  font-size: 24px;
+  font-family: sans-serif;
+  color: #0d263b;
+  font-weight: 600;
+  line-height: 1.4;
+}
+@media (min-width: 1200px) {
+  .breadcrumb {
+    margin-bottom: 0;
+    padding: 35px 0 !important;
+  }
+}
+.see-more {
+  text-decoration: none;
 }

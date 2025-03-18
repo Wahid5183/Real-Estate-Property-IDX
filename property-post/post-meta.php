@@ -37,6 +37,14 @@ function pcmp_register_custom_meta_box() {
         'normal',
         'high'
     );
+    add_meta_box(
+        'property_images_meta_box',                   // Unique ID
+        __('Property Images', 'textdomain'),          // Title
+        'property_images_meta_box_callback',          // Callback function
+        'property',                                   // Post type slug (adjust if needed)
+        'normal',                                     // Context
+        'high'                                        // Priority
+    );
 }
 add_action('add_meta_boxes', 'pcmp_register_custom_meta_box');
 
@@ -88,229 +96,11 @@ function amenities_features_metabox_html($post) {
     <?php
 }
 
-
-
-
-function pcmp_property_basic_meta_box_html( $post ) {
-    // Retrieve current meta field values.
-    $description = get_post_meta( $post->ID, 'property_description', true );
-    $location    = get_post_meta( $post->ID, 'property_address', true );
-    
-    // Repeat for other meta fields...
-
-    ?>
-    <p>
-        <label for="pcmp_property_description">Description:</label>
-        <textarea id="pcmp_property_description" name="pcmp_property_description" rows="4" style="width:100%;"><?php echo esc_textarea($description); ?></textarea>
-    </p>
-    <p>
-        <label for="pcmp_property_location">Location:</label>
-        <input type="text" id="pcmp_property_location" name="pcmp_property_location" value="<?php echo esc_attr($location); ?>" style="width:100%;" />
-    </p>
-    
-   
-    
-    
-    <!-- Repeat for additional fields -->
-    <?php
-}
-function pcmp_property_housing_meta_box_html( $post ) {
-    // Retrieve current meta field values.
-    $home_area = get_post_meta( $post->ID, 'property_home_area', true );
-    $rooms = get_post_meta( $post->ID, 'property_rooms', true );
-    $baths = get_post_meta( $post->ID, 'property_baths', true );
-    $beds = get_post_meta( $post->ID, 'property_beds', true );
-    $garages = get_post_meta( $post->ID, 'property_garages', true );
-    $year_built    = get_post_meta( $post->ID, 'property_year_built', true );
-    $Status    = get_post_meta( $post->ID, 'property_status', true );
-    $lot_area    = get_post_meta( $post->ID, 'property_lot_area', true );
-    $lot_dimensions    = get_post_meta( $post->ID, 'property_lot_dimensions', true );
-    $property_type    = get_post_meta( $post->ID, 'property_type', true );
-    $property_subtype    = get_post_meta( $post->ID, 'property_subtype', true );
-    $property_storiestotal    = get_post_meta( $post->ID, 'property_storiestotal', true );
-    // Repeat for other meta fields...
-
-    ?>
-    <p>
-        <label for="pcmp_property_home_area">Home Area:</label>
-        <input type="number" id="pcmp_property_home_area" name="pcmp_property_home_area" value="<?php echo esc_attr($home_area); ?>" style="width:30%;" />
-    </p>
-    <p>
-        <label for="pcmp_property_baths">Baths:</label>
-        <input type="number" id="pcmp_property_baths" name="pcmp_property_baths" value="<?php echo esc_attr($baths); ?>" style="width:22%;" />
-        <label for="pcmp_property_beds">Beds:</label>
-        <input type="number" id="pcmp_property_beds" name="pcmp_property_beds" value="<?php echo esc_attr($beds); ?>" style="width:22%;" />
-        <label for="pcmp_property_garages">Garages:</label>
-        <input type="number" id="pcmp_property_garages" name="pcmp_property_garages" value="<?php echo esc_attr($garages); ?>" style="width:22%;" />
-        
-    </p>
-        <label for="pcmp_property_year_built">Year Built:</label>
-        <input type="number" min=1900 id="pcmp_property_year_built" name="pcmp_property_year_built" value="<?php echo esc_attr($year_built) ; ?>" style="width:30%;" />
-        <label for="pcmp_property_status">Status:</label>
-        <select name="pcmp_property_status" id="pcmp_property_status">
-            <option value="Rented/Leased" <?php $Status = "Rent" ? 'selected' : "" ;  ?> >For Rent</option>
-            <option value="Sold"  <?php $Status = "Sold" ? 'selected' : "" ;  ?> >For Sale</option>
-        </select>
-        <p>
-        
-        <label for="pcmp_property_lot_area">Lot Area:</label>
-        <input type="number" min=100 id="pcmp_property_lot_area" name="pcmp_property_lot_area" value="<?php echo esc_attr($lot_area) ; ?>" style="width:30%;" />
-        </p>
-
-    <p>
-        <label for="pcmp_property_type">Property Type:</label>
-        <input type="text" id="pcmp_property_type" name="pcmp_property_type" value="<?php echo esc_attr($property_type) ; ?>" style="width:30%;" />
-        <label for="pcmp_property_subtype">Property SubType:</label>
-        <input type="text" id="pcmp_property_subtype" name="pcmp_property_subtype" value="<?php echo esc_attr($property_subtype) ; ?>" style="width:30%;" />
-    </p>
-    <label for="pcmp_property_storiestotal">Number of Floor:</label>
-        <input type="number" id="pcmp_property_storiestotal" name="pcmp_property_storiestotal" value="<?php echo esc_attr($property_storiestotal) ; ?>" style="width:30%;" />
-    <!-- Repeat for additional fields -->
-    <?php
-}
-function pcmp_property_Financial_Status_box_html( $post ) {
-    // Retrieve current meta field values.
-    $price    = get_post_meta( $post->ID, 'property_price', true );
-    $close_price    = get_post_meta( $post->ID, 'property_close_price', true );
-    $daysonmarket    = get_post_meta( $post->ID, 'property_daysonmarket', true );
-    $taxannualamount    = get_post_meta( $post->ID, 'property_taxannualamount', true );
-    $taxassessedvalue    = get_post_meta( $post->ID, 'property_taxassessedvalue', true );
-    
-    // Repeat for other meta fields...
-
-    ?>
-    <p>
-        <label for="pcmp_property_price">List Price($):</label>
-        <input type="number" id="pcmp_property_price" name="pcmp_property_price" value="<?php echo esc_attr($price);  ?>" style="width:30%;" />
-        <label for="pcmp_property_close_price">Close Price($):</label>
-        <input type="number" id="pcmp_property_close_price" name="pcmp_property_close_price" value="<?php echo esc_attr($daysonmarket);  ?>" style="width:30%;" />
-        
-        
-    </p>
-    <p>
-        <label for="pcmp_property_daysonmarket">Days On Markets:</label>
-        <input type="number" id="pcmp_property_daysonmarket" name="pcmp_property_daysonmarket" value="<?php echo esc_attr($daysonmarket);  ?>" style="width:30%;" />
-        <label for="pcmp_property_taxannualamount">Tax Annual Amount($):</label>
-        <input type="number" id="pcmp_property_taxannualamount" name="pcmp_property_taxannualamount" value="<?php echo esc_attr($taxannualamount);  ?>" style="width:30%;" />
-    </p>
-    <p>
-        <label for="pcmp_property_taxassessedvalue">Tax Assessed Value($):</label>
-        <input type="number" id="pcmp_property_taxassessedvalue" name="pcmp_property_taxassessedvalue" value="<?php echo esc_attr($taxassessedvalue);  ?>" style="width:30%;" />
-    </p>
-    
-    <!-- Repeat for additional fields -->
-    <?php
-}
-
-function pcmp_save_property_meta( $post_id ) {
-
-
-    //Handle Property Basics Details
-    $meta_data = [
-        'pcmp_property_description' => 'property_description',
-        'pcmp_property_location' => 'property_address',
-        'pcmp_property_year_built' => 'property_year_built',
-        'pcmp_property_status' => 'property_status',
-        'pcmp_property_lot_area' => 'property_lot_area',
-        'pcmp_property_type' => 'property_type',
-        'pcmp_property_subtype' => 'property_subtype',
-        'pcmp_property_storiestotal' => 'property_storiestotal',
-        'pcmp_property_home_area' => 'property_home_area',
-        'pcmp_property_rooms' => 'property_rooms',
-        'pcmp_property_baths' => 'property_baths',
-        'pcmp_property_beds' => 'property_beds',
-        'pcmp_property_garages' => 'property_garages',
-        'pcmp_property_price' => 'property_price',
-        'pcmp_property_close_price' => 'property_close_price',
-        'pcmp_property_daysonmarket' => 'property_daysonmarket',
-        'pcmp_property_taxannualamount' => 'property_taxannualamount',
-        'pcmp_property_taxassessedvalue' => 'property_taxassessedvalue',
-
-    ];
-    foreach($meta_data as $meta_key => $meta_value){
-        if ( array_key_exists($meta_key, $_POST ) ) {
-        update_post_meta(
-            $post_id,
-            $meta_value,
-            sanitize_text_field( $_POST[$meta_key] )
-        );
-    }
-    }
-
-    if (!isset($_POST['custom_fields_nonce']) || !wp_verify_nonce($_POST['custom_fields_nonce'], basename(__FILE__))) {
-        return;
-    }
-
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-
-    if (!current_user_can('edit_post', $post_id)) {
-        return;
-    }
-
-    $custom_fields = [];
-    if (isset($_POST['custom_field_name']) && isset($_POST['custom_field_value'])) {
-        $names = $_POST['custom_field_name'];
-        $values = $_POST['custom_field_value'];
-
-        for ($i = 0; $i < count($names); $i++) {
-            if (!empty($names[$i]) && !empty($values[$i])) {
-                $custom_fields[] = [
-                    'name' => sanitize_text_field($names[$i]),
-                    'value' => sanitize_text_field($values[$i])
-                ];
-            }
-        }
-    }
-
-    update_post_meta($post_id, 'custom_fields', $custom_fields);
-    
-    // Save additional fields similarly...
-}
-add_action( 'save_post', 'pcmp_save_property_meta' );
-
-function psp_template_include( $template ) {
-    //Check is it Single property page
-    if ( is_singular( 'property' ) ) {
-        //Add New template for single property
-        $plugin_template = plugin_dir_path( __FILE__ ) . 'templates/single-property.php';
-        if ( file_exists( $plugin_template ) ) {
-            return $plugin_template;
-        } else {
-            error_log( 'Template file does not exist: ' . $plugin_template );
-        }
-    }
-    if(is_archive( 'property' )){
-        //Add New template for single property
-        $plugin_template = plugin_dir_path( __FILE__ ) . 'templates/arcrive-property.php';
-        if ( file_exists( $plugin_template ) ) {
-            return $plugin_template;
-        } else {
-            error_log( 'Template file does not exist: ' . $plugin_template );
-        }
-    }
-    return $template;
-}
-add_filter( 'template_include', 'psp_template_include' );
-
-
 function my_admin_enqueue_scripts() {
     wp_enqueue_media();
 }
 add_action('admin_enqueue_scripts', 'my_admin_enqueue_scripts');
-// Register the metabox for multiple property images.
-function my_property_meta_box() {
-    add_meta_box(
-        'property_images_meta_box',                   // Unique ID
-        __('Property Images', 'textdomain'),          // Title
-        'property_images_meta_box_callback',          // Callback function
-        'property',                                   // Post type slug (adjust if needed)
-        'normal',                                     // Context
-        'high'                                        // Priority
-    );
-}
-add_action('add_meta_boxes', 'my_property_meta_box');
+
 
 // Display callback for the metabox.
 function property_images_meta_box_callback($post) {
@@ -319,6 +109,7 @@ function property_images_meta_box_callback($post) {
 
     // Retrieve existing image URLs (stored as a comma-separated string)
     $image_srcs = get_post_meta($post->ID, '_property_image_src', true);
+    $video = get_post_meta($post->ID, 'property_video', true);
     $image_srcs = !empty($image_srcs) ? explode(',', $image_srcs) : [];
     ?>
     <div id="property-images-container">
@@ -338,6 +129,11 @@ function property_images_meta_box_callback($post) {
     <!-- Hidden field to store comma-separated image srcs -->
     <input type="hidden" name="property_image_src" id="property_image_src" value="<?php echo esc_attr(implode(',', $image_srcs)); ?>" />
     <button type="button" class="button" id="upload-property-images"><?php _e('Add Photos', 'textdomain'); ?></button>
+
+    <p>
+        <label for="pcmp_property_video">property video url:</label>
+        <input type="url" id="pcmp_property_video" name="pcmp_property_video" value="<?php echo esc_url($video);  ?>" style="width:80%;" />
+    </p>
     
     <script>
         jQuery(document).ready(function($){
@@ -409,22 +205,235 @@ function property_images_meta_box_callback($post) {
     <?php
 }
 
-// Save the metabox data.
-function save_property_images_meta($post_id) {
-    // Verify nonce.
-    if (!isset($_POST['property_images_nonce']) || !wp_verify_nonce($_POST['property_images_nonce'], 'save_property_images')) {
+
+function pcmp_property_basic_meta_box_html( $post ) {
+    // Retrieve current meta field values.
+    $description = get_post_meta( $post->ID, 'property_description', true );
+    $location    = get_post_meta( $post->ID, 'property_address', true );
+    
+    // Repeat for other meta fields...
+
+    ?>
+    <p>
+        <label for="pcmp_property_description">Description:</label>
+        <textarea id="pcmp_property_description" name="pcmp_property_description" rows="4" style="width:100%;"><?php echo esc_textarea($description); ?></textarea>
+    </p>
+    <p>
+        <label for="pcmp_property_location">Location:</label>
+        <input type="text" id="pcmp_property_location" name="pcmp_property_location" value="<?php echo esc_attr($location); ?>" style="width:100%;" />
+    </p>
+    
+   
+    
+    
+    <!-- Repeat for additional fields -->
+    <?php
+}
+function pcmp_property_housing_meta_box_html( $post ) {
+    // Retrieve current meta field values.
+    $home_area = get_post_meta( $post->ID, 'property_home_area', true );
+    $rooms = get_post_meta( $post->ID, 'property_rooms', true );
+    $baths = get_post_meta( $post->ID, 'baths', true );
+    $beds = get_post_meta( $post->ID, 'beds', true );
+    $garages = get_post_meta( $post->ID, 'garages', true );
+    $year_built    = get_post_meta( $post->ID, 'property_year_built', true );
+    $Status    = get_post_meta( $post->ID, 'property_status', true );
+    $lot_area    = get_post_meta( $post->ID, 'lot_area', true );
+    $lot_dimensions    = get_post_meta( $post->ID, 'property_lot_dimensions', true );
+    $property_type    = get_post_meta( $post->ID, 'property_type', true );
+    $property_subtype    = get_post_meta( $post->ID, 'property_subtype', true );
+    $property_storiestotal    = get_post_meta( $post->ID, 'property_storiestotal', true );
+    // Repeat for other meta fields...
+
+    ?>
+    <p>
+        <label for="pcmp_property_home_area">Home Area:</label>
+        <input type="number" id="pcmp_property_home_area" name="pcmp_property_home_area" value="<?php echo esc_attr($home_area); ?>" style="width:30%;" />
+    </p>
+    <p>
+        <label for="pcmp_baths">Baths:</label>
+        <input type="number" id="pcmp_baths" name="pcmp_baths" value="<?php echo esc_attr($baths); ?>" style="width:22%;" />
+        <label for="pcmp_beds">Beds:</label>
+        <input type="number" id="pcmp_beds" name="pcmp_beds" value="<?php echo esc_attr($beds); ?>" style="width:22%;" />
+        <label for="pcmp_garages">Garages:</label>
+        <input type="number" id="pcmp_garages" name="pcmp_garages" value="<?php echo esc_attr($garages); ?>" style="width:22%;" />
+        
+    </p>
+        <label for="pcmp_property_year_built">Year Built:</label>
+        <input type="number" min=1000 id="pcmp_property_year_built" name="pcmp_property_year_built" value="<?php echo esc_attr($year_built) ; ?>" style="width:30%;" />
+        <label for="pcmp_property_status">Status:</label>
+        <select name="pcmp_property_status" id="pcmp_property_status">
+
+        <option value="Rented/Leased" <?php echo ($Status === "Rented/Leased") ? 'selected' : ''; ?>>For Rent</option>
+        <option value="Sold" <?php echo ($Status === "Sold") ? 'selected' : ''; ?>>For Sale</option>
+
+        </select>
+        <p>
+        
+        <label for="pcmp_lot_area">Lot Area:</label>
+        <input type="number" min=100 id="pcmp_lot_area" name="pcmp_lot_area" value="<?php echo esc_attr($lot_area) ; ?>" style="width:30%;" />
+        </p>
+
+    <p>
+        <label for="pcmp_property_type">Property Type:</label>
+        <input type="text" id="pcmp_property_type" name="pcmp_property_type" value="<?php echo esc_attr($property_type) ; ?>" style="width:30%;" />
+        <label for="pcmp_property_subtype">Property SubType:</label>
+        <input type="text" id="pcmp_property_subtype" name="pcmp_property_subtype" value="<?php echo esc_attr($property_subtype) ; ?>" style="width:30%;" />
+    </p>
+    <label for="pcmp_property_storiestotal">Number of Floor:</label>
+        <input type="number" id="pcmp_property_storiestotal" name="pcmp_property_storiestotal" value="<?php echo esc_attr($property_storiestotal) ; ?>" style="width:30%;" />
+    <!-- Repeat for additional fields -->
+    <?php
+}
+function pcmp_property_Financial_Status_box_html( $post ) {
+    // Retrieve current meta field values.
+    $price    = get_post_meta( $post->ID, 'property_price', true );
+    $close_price    = get_post_meta( $post->ID, 'property_close_price', true );
+    $daysonmarket    = get_post_meta( $post->ID, 'property_daysonmarket', true );
+    $taxannualamount    = get_post_meta( $post->ID, 'property_taxannualamount', true );
+    $taxassessedvalue    = get_post_meta( $post->ID, 'property_taxassessedvalue', true );
+    
+    // Repeat for other meta fields...
+
+    ?>
+    <p>
+        <label for="pcmp_property_price">List Price($):</label>
+        <input type="number" id="pcmp_property_price" name="pcmp_property_price" value="<?php echo esc_attr($price);  ?>" style="width:30%;" />
+        <label for="pcmp_property_close_price">Close Price($):</label>
+        <input type="number" id="pcmp_property_close_price" name="pcmp_property_close_price" value="<?php echo esc_attr($daysonmarket);  ?>" style="width:30%;" />
+        
+        
+    </p>
+    <p>
+        <label for="pcmp_property_daysonmarket">Days On Markets:</label>
+        <input type="number" id="pcmp_property_daysonmarket" name="pcmp_property_daysonmarket" value="<?php echo esc_attr($daysonmarket);  ?>" style="width:30%;" />
+        <label for="pcmp_property_taxannualamount">Tax Annual Amount($):</label>
+        <input type="number" id="pcmp_property_taxannualamount" name="pcmp_property_taxannualamount" value="<?php echo esc_attr($taxannualamount);  ?>" style="width:30%;" />
+    </p>
+    <p>
+        <label for="pcmp_property_taxassessedvalue">Tax Assessed Value($):</label>
+        <input type="number" id="pcmp_property_taxassessedvalue" name="pcmp_property_taxassessedvalue" value="<?php echo esc_attr($taxassessedvalue);  ?>" style="width:30%;" />
+    </p>
+    
+    <!-- Repeat for additional fields -->
+    <?php
+}
+
+function pcmp_save_property_meta( $post_id ) {
+
+
+    //Handle Property Basics Details
+    $meta_data = [
+        'pcmp_property_description' => 'property_description',
+        'pcmp_property_location' => 'property_address',
+        'pcmp_property_year_built' => 'property_year_built',
+        'pcmp_property_status' => 'property_status',
+        'pcmp_lot_area' => 'lot_area',
+        'pcmp_property_type' => 'property_type',
+        'pcmp_property_subtype' => 'property_subtype',
+        'pcmp_property_storiestotal' => 'property_storiestotal',
+        'pcmp_property_home_area' => 'property_home_area',
+        'pcmp_property_rooms' => 'property_rooms',
+        'pcmp_baths' => 'baths',
+        'pcmp_beds' => 'beds',
+        'pcmp_garages' => 'garages',
+        'pcmp_property_price' => 'property_price',
+        'pcmp_property_close_price' => 'property_close_price',
+        'pcmp_property_daysonmarket' => 'property_daysonmarket',
+        'pcmp_property_taxannualamount' => 'property_taxannualamount',
+        'pcmp_property_taxassessedvalue' => 'property_taxassessedvalue',
+
+    ];
+    foreach($meta_data as $meta_key => $meta_value){
+        if ( array_key_exists($meta_key, $_POST ) ) {
+        update_post_meta(
+            $post_id,
+            $meta_value,
+            sanitize_text_field( $_POST[$meta_key] )
+        );
+    }
+    }
+
+    if (!isset($_POST['custom_fields_nonce']) || !wp_verify_nonce($_POST['custom_fields_nonce'], basename(__FILE__))) {
         return;
     }
-    // Prevent auto-save interference.
+
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
     }
-    if (isset($_POST['property_image_src'])) {
-        // Sanitize and save the comma-separated list of image URLs.
-        $srcs = sanitize_text_field($_POST['property_image_src']);
-        update_post_meta($post_id, '_property_image_src', $srcs);
+
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
     }
+
+    $custom_fields = [];
+    if (isset($_POST['custom_field_name']) && isset($_POST['custom_field_value'])) {
+        $names = $_POST['custom_field_name'];
+        $values = $_POST['custom_field_value'];
+
+        for ($i = 0; $i < count($names); $i++) {
+            if (!empty($names[$i]) && !empty($values[$i])) {
+                $custom_fields[] = [
+                    'name' => sanitize_text_field($names[$i]),
+                    'value' => sanitize_text_field($values[$i])
+                ];
+            }
+        }
+    }
+
+    update_post_meta($post_id, 'custom_fields', $custom_fields);
+
+
+        // Verify nonce.
+        if (!isset($_POST['property_images_nonce']) || !wp_verify_nonce($_POST['property_images_nonce'], 'save_property_images')) {
+            return;
+        }
+        // Prevent auto-save interference.
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+        if (isset($_POST['property_image_src'])) {
+            // Sanitize and save the comma-separated list of image URLs.
+            $srcs = sanitize_text_field($_POST['property_image_src']);
+            update_post_meta($post_id, '_property_image_src', $srcs);
+        }
+        if (isset($_POST['pcmp_property_video'])) {
+            // Sanitize and save the comma-separated list of image URLs.
+            //$srcs = sanitize_text_field($_POST['property_image_src']);
+            update_post_meta($post_id, 'property_video', $_POST['pcmp_property_video']);
+        }
+    
+    // Save additional fields similarly...
 }
-add_action('save_post', 'save_property_images_meta');
+add_action( 'save_post', 'pcmp_save_property_meta' );
+
+function psp_template_include( $template ) {
+    
+
+    //Check is it Single property page
+    if ( is_singular( 'property' ) ) {
+        //Add New template for single property
+        $plugin_template = plugin_dir_path( __FILE__ ) . 'templates/single-property.php';
+        if ( file_exists( $plugin_template ) ) {
+            return $plugin_template;
+        } else {
+            error_log( 'Template file does not exist: ' . $plugin_template );
+        }
+    }
+    if(is_archive( 'property' )){
+        //Add New template for single property
+        $plugin_template = plugin_dir_path( __FILE__ ) . 'templates/arcrive-property.php';
+        if ( file_exists( $plugin_template ) ) {
+            return $plugin_template;
+        } else {
+            error_log( 'Template file does not exist: ' . $plugin_template );
+        }
+    }
+    return $template;
+}
+add_filter( 'template_include', 'psp_template_include' );
+
+
+;
 
 
